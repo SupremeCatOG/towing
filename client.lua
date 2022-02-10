@@ -108,8 +108,17 @@ RegisterCommand('detach', function()
     if IsPedInAnyVehicle(player, false) then
         vehicle = GetVehiclePedIsIn(player, false)
         if GetPedInVehicleSeat(vehicle, -1) == player then
-            DetachEntity(vehicle, false, true)
+            if IsEntityAttached(vehicle) then
+                DetachEntity(vehicle, false, true)
+                return drawNotification('The vehicle has been successfully detached.')
+            else
+                return drawNotification('The vehicle isn\'t attached to anything.')
+            end
+        else
+            return drawNotification('You are not in the driver seat.')
         end
+    else
+        return drawNotification('You are not in a vehicle.')
     end
 end)
 
