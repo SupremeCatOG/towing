@@ -1,12 +1,12 @@
 local whitelist = {
     'FLATBED',
     'BENSON',
-    'WASTLNDR',
+    'WASTLNDR', -- WASTELANDER
     'MULE',
     'MULE2',
     'MULE3',
     'MULE4',
-    'TRAILER',
+    'TRAILER', -- TRFLAT
     'ARMYTRAILER',
     'BOATTRAILER'
 }
@@ -33,7 +33,7 @@ RegisterCommand('deployramp', function ()
     local vehicle = nil
 
     if IsAnyVehicleNearPoint(playerCoords, radius) then
-        vehicle = GetClosestVehicle(playerCoords, radius, 0, 70)
+        vehicle = getClosestVehicle(playerCoords)
         local vehicleName = GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))
 
         drawNotification("Trying to deploy a ramp for: " .. vehicleName)
@@ -121,6 +121,28 @@ RegisterCommand('detach', function()
         return drawNotification('You are not in a vehicle.')
     end
 end)
+
+function getClosestVehicle(coords)
+    local ped = PlayerPedId()
+    local vehicles = GetGamePool('CVehicle')
+    local closestDistance = -1
+    local closestVehicle = -1
+    if coords then
+        coords = type(coords) == 'table' and vec3(coords.x, coords.y, coords.z) or coords
+    else
+        coords = GetEntityCoords(ped)
+    end
+    for i = 1, #vehicles, 1 do
+        local vehicleCoords = GetEntityCoords(vehicles[i])
+        local distance = #(vehicleCoords - coords)
+
+        if closestDistance == -1 or closestDistance > distance then
+            closestVehicle = vehicles[i]
+            closestDistance = distance
+        end
+    end
+    return closestVehicle, closestDistance
+end
 
 function GetVehicleBelowMe(cFrom, cTo) -- Function to get the vehicle under me
     local rayHandle = CastRayPointToPoint(cFrom.x, cFrom.y, cFrom.z, cTo.x, cTo.y, cTo.z, 10, PlayerPedId(), 0) -- Sends raycast under me
