@@ -1,30 +1,3 @@
-local whitelist = {
-    'FLATBED',
-    'BENSON',
-    'WASTLNDR', -- WASTELANDER
-    'MULE',
-    'MULE2',
-    'MULE3',
-    'MULE4',
-    'TRAILER', -- TRFLAT
-    'ARMYTRAILER',
-    'BOATTRAILER'
-}
-
-local offsets = {
-    {model = 'FLATBED', offset = {x = 0.0, y = -9.0, z = -1.25}},
-    {model = 'BENSON', offset = {x = 0.0, y = 0.0, z = -1.25}},
-    {model = 'WASTLNDR', offset = {x = 0.0, y = -7.2, z = -0.9}},
-    {model = 'MULE', offset = {x = 0.0, y = -7.0, z = -1.75}},
-    {model = 'MULE2', offset = {x = 0.0, y = -7.0, z = -1.75}},
-    {model = 'MULE3', offset = {x = 0.0, y = -7.0, z = -1.75}},
-    {model = 'MULE4', offset = {x = 0.0, y = -7.0, z = -1.75}},
-    {model = 'TRAILER', offset = {x = 0.0, y = -9.0, z = -1.25}},
-    {model = 'ARMYTRAILER', offset = {x = 0.0, y = -9.5, z = -3.0}},
-}
-
-local rampHash = 'imp_prop_flatbed_ramp'
-
 RegisterCommand('deployramp', function ()
     local player = PlayerPedId()
     local playerCoords = GetEntityCoords(player)
@@ -33,17 +6,17 @@ RegisterCommand('deployramp', function ()
     local vehicle = nil
 
     if IsAnyVehicleNearPoint(playerCoords, radius) then
-        vehicle = getClosestVehicle(playerCoords)
+        vehicle = getClosestVehicle(playerCoords) --GetClosestVehicle(playerCoords, radius, 0, 70)
         local vehicleName = GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))
 
         drawNotification("Trying to deploy a ramp for: " .. vehicleName)
 
-        if contains(vehicleName, whitelist) then
+        if contains(vehicleName, Config.whitelist) then
             local vehicleCoords = GetEntityCoords(vehicle)
-            
-            for _, value in pairs(offsets) do
+
+            for _, value in pairs(Config.offsets) do
                 if vehicleName == value.model then
-		    local ramp = CreateObject(rampHash, vector3(vehicleCoords), true, false, false)
+                    local ramp = CreateObject(RampHash, vector3(value.offset.x, value.offset.y, value.offset.z), true, false, false)
                     AttachEntityToEntity(ramp, vehicle, GetEntityBoneIndexByName(vehicle, 'chassis'), value.offset.x, value.offset.y, value.offset.z , 180.0, 180.0, 0.0, 0, 0, 1, 0, 0, 1)
                 end
             end
@@ -60,10 +33,10 @@ RegisterCommand('ramprm', function()
     local player = PlayerPedId()
     local playerCoords = GetEntityCoords(player)
 
-    local object = GetClosestObjectOfType(playerCoords.x, playerCoords.y, playerCoords.z, 5.0, rampHash, false, 0, 0)
+    local object = GetClosestObjectOfType(playerCoords.x, playerCoords.y, playerCoords.z, 5.0, RampHash, false, 0, 0)
 
     if not IsPedInAnyVehicle(player, false) then
-        if GetHashKey(rampHash) == GetEntityModel(object) then
+        if GetHashKey(RampHash) == GetEntityModel(object) then
             DeleteObject(object)
             drawNotification("Ramp removed successfully.")
             return
@@ -87,7 +60,7 @@ RegisterCommand('attach', function()
 
             local vehiclesOffset = GetOffsetFromEntityGivenWorldCoords(belowEntity, vehicleCoords)
 
-            if contains(vehicleBelowName, whitelist) then
+            if contains(vehicleBelowName, Config.whitelist) then
                 if not IsEntityAttached(vehicle) then
                     AttachEntityToEntity(vehicle, belowEntity, GetEntityBoneIndexByName(belowEntity, 'chassis'), vehiclesOffset, 0.0, 0.0, 0.0, false, false, true, false, 0, true)
                     return drawNotification('Vehicle attached properly.')
