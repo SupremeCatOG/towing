@@ -63,10 +63,11 @@ RegisterCommand('attach', function()
             local vehiclesOffset = GetOffsetFromEntityGivenWorldCoords(belowEntity, vehicleCoords)
 
             local vehiclePitch = vehicleRotation.x - vehicleBelowRotation.x
+            local vehicleYaw = vehicleRotation.z - vehicleBelowRotation.z
 
             if contains(vehicleBelowName, Config.whitelist) then
                 if not IsEntityAttached(vehicle) then
-                    AttachEntityToEntity(vehicle, belowEntity, GetEntityBoneIndexByName(belowEntity, 'chassis'), vehiclesOffset, vehiclePitch, 0.0, 0.0, false, false, true, false, 0, true)
+                    AttachEntityToEntity(vehicle, belowEntity, GetEntityBoneIndexByName(belowEntity, 'chassis'), vehiclesOffset, vehiclePitch, 0.0, vehicleYaw, false, false, true, false, 0, true)
                     return drawNotification('Vehicle attached properly.')
                 end
                 return drawNotification('Vehicle already attached.')
