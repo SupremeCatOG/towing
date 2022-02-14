@@ -55,14 +55,18 @@ RegisterCommand('attach', function()
         if GetPedInVehicleSeat(vehicle, -1) == player then
             local vehicleCoords = GetEntityCoords(vehicle)
             local vehicleOffset = GetOffsetFromEntityInWorldCoords(vehicle, 1.0, 0.0, -1.5)
+            local vehicleRotation = GetEntityRotation(vehicle, 2)
             local belowEntity = GetVehicleBelowMe(vehicleCoords, vehicleOffset)
+            local vehicleBelowRotation = GetEntityRotation(belowEntity, 2)
             local vehicleBelowName = GetDisplayNameFromVehicleModel(GetEntityModel(belowEntity))
 
             local vehiclesOffset = GetOffsetFromEntityGivenWorldCoords(belowEntity, vehicleCoords)
 
+            local vehiclePitch = vehicleRotation.x - vehicleBelowRotation.x
+
             if contains(vehicleBelowName, Config.whitelist) then
                 if not IsEntityAttached(vehicle) then
-                    AttachEntityToEntity(vehicle, belowEntity, GetEntityBoneIndexByName(belowEntity, 'chassis'), vehiclesOffset, 0.0, 0.0, 0.0, false, false, true, false, 0, true)
+                    AttachEntityToEntity(vehicle, belowEntity, GetEntityBoneIndexByName(belowEntity, 'chassis'), vehiclesOffset, vehiclePitch, 0.0, 0.0, false, false, true, false, 0, true)
                     return drawNotification('Vehicle attached properly.')
                 end
                 return drawNotification('Vehicle already attached.')
