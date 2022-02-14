@@ -6,7 +6,7 @@ RegisterCommand('deployramp', function ()
     local vehicle = nil
 
     if IsAnyVehicleNearPoint(playerCoords, radius) then
-        vehicle = getClosestVehicle(playerCoords) --GetClosestVehicle(playerCoords, radius, 0, 70)
+        vehicle = getClosestVehicle(playerCoords)
         local vehicleName = GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))
 
         drawNotification("Trying to deploy a ramp for: " .. vehicleName)
