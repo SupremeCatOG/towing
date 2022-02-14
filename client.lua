@@ -40,10 +40,10 @@ RegisterCommand('deployramp', function ()
 
         if contains(vehicleName, whitelist) then
             local vehicleCoords = GetEntityCoords(vehicle)
-
-            local ramp = CreateObject(rampHash, vector3(vehicleCoords), true, false, false)
+            
             for _, value in pairs(offsets) do
                 if vehicleName == value.model then
+		    local ramp = CreateObject(rampHash, vector3(vehicleCoords), true, false, false)
                     AttachEntityToEntity(ramp, vehicle, GetEntityBoneIndexByName(vehicle, 'chassis'), value.offset.x, value.offset.y, value.offset.z , 180.0, 180.0, 0.0, 0, 0, 1, 0, 0, 1)
                 end
             end
