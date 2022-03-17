@@ -6,6 +6,4 @@ Anyway, enough backstory for the origin of this script.
 
 Here’s a quick and nasty showcase of the script: https://youtu.be/y_QYMiO0vJ8
 
-Quick disclaimer, at the moment the script doesn’t find the big trailers, like the army trailer you can see in the showcase, if anyone feels like trying to sort that out, or suggest a fix, feel free to leave a message on this thread or do a pull request on github
-
 Also, don’t use this code to make yet another paid version of this :)
