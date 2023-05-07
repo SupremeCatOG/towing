@@ -14,7 +14,7 @@ Config.whitelist = { -- when adding add-on cars simply use their spawn name
 }
 
 Config.offsets = { -- when adding add-on cars simply use their spawn name
-    {model = 'FLATBED', offset = {x = 0.0, y = -9.0, z = -1.25}},
+    {model = 'FLATBED', offset = {x = 0.0, y = -9.0, z = -1.25}}, -- x -> Left/Right adjustment | y -> Forward/Backward adjustment | z -> Height adjustment
     {model = 'BENSON', offset = {x = 0.0, y = 0.0, z = -1.25}},
     {model = 'WASTLNDR', offset = {x = 0.0, y = -7.2, z = -0.9}},
     {model = 'MULE', offset = {x = 0.0, y = -7.0, z = -1.75}},
